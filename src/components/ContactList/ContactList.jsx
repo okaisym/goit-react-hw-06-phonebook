@@ -1,29 +1,38 @@
-import ContactItem from '../ContactItem/ContactItem';
-import { useContacts } from '../../hooks/useContacts';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getFilter } from '../../redux/filterSlice';
+import { Notify } from 'notiflix';
+import { getContacts, deleteContact } from '../../redux/contactSlice';
+import { DeleteBtn } from './ContactList.styled';
 
-const List = ({ contacts }) => {
-  const { deleteContact } = useContacts();
+export const List = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
 
-  const filterValue = useSelector(state => state.contacts.filter);
-
-  const filteredContacts = contacts.filter(contacts =>
-    contacts.name.toLowerCase().includes(filterValue.toLowerCase())
+  const filteredContacts = contacts.filter(
+    contact =>
+      contact &&
+      contact.name &&
+      contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
     <ul>
       {filteredContacts.map(contact => (
-        <ContactItem
-          key={contact.id}
-          id={contact.id}
-          name={contact.name}
-          number={contact.number}
-          onClick={deleteContact}
-        />
+        <li key={contact.id}>
+          <p>
+            {contact && contact.name}: <span>{contact && contact.number}</span>
+          </p>
+          <DeleteBtn
+            onClick={() => {
+              Notify.info(`${contact.name} is deleted from your phone book`);
+              dispatch(deleteContact({ id: contact.id, name: contact.name }));
+            }}
+          >
+            Delete
+          </DeleteBtn>
+        </li>
       ))}
     </ul>
   );
 };
-
-export default List;

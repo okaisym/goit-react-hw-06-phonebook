@@ -1,11 +1,10 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 export const Label = styled.label`
   font-weight: 700;
   display: flex;
   flex-flow: column;
-  margin: 10px 0 10px 0;
-  font-size: 14px;
+
   color: #fff;
 `;
 
@@ -38,7 +37,14 @@ export const Input = styled.input`
   padding: 8px;
   border-radius: 4px;
   font-size: 14px;
-  margin-bottom: 5px;
   outline: none;
-  border: none;
+  border-color: #6495ed;
+  max-width: 500px;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+ justify-content: center;
+  align-items: center;
 `;
